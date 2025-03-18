@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prakash Yadav - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+            overflow-y: auto;
+            height: 100vh;
+            position: relative;
+        }
+
+        canvas#bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 50px;
+            align-items: center;
+            min-height: 80vh;
+            padding-bottom: 60px;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.9), rgba(40, 40, 40, 0.7));
+            border: 1px solid #00ffcc;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            transform: perspective(1200px) rotateX(5deg) rotateY(5deg);
+            transition: all 0.6s ease;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+        }
+
+        .profile-card:hover {
+            transform: perspective(1200px) rotateX(0deg) rotateY(0deg);
+            box-shadow: 0 0 50px rgba(0, 255, 204, 0.6);
+        }
+
+        .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid #00ffcc;
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+            filter: drop-shadow(0 0 20px #00ffcc);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 0 30px #00ffcc);
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #00ffcc;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: holographic 2s infinite;
+        }
+
+        .bio {
+            padding: 40px;
+            background: rgba(10, 10, 10, 0.85);
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 204, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .bio p {
+            font-size: 1.3rem;
+            margin: 15px 0;
+            color: #d0d0d0;
+        }
+
+        .bio p strong {
+            color: #00ffcc;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .skill {
+            background: linear-gradient(45deg, #00ffcc, #00b8ff);
+            color: #0a0a0a;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-weight: 700;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            z-index: 1;
+        }
+
+        .skill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .skill:hover::before {
+            left: 0;
+        }
+
+        .skill:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px #00ffcc;
+        }
+
+        .contact-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            font-size: 2.5rem;
+            color: #00ffcc;
+            margin-bottom: 40px;
+            animation: holographic 2s infinite;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px;
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid #00ffcc;
+            border-radius: 15px;
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        .contact-form:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 0 60px rgba(0, 255, 204, 0.5);
+        }
+
+        .contact-form input, .contact-form textarea {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #00ffcc;
+            border-radius: 8px;
+            padding: 15px;
+            color: #fff;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-form input:focus, .contact-form textarea:focus {
+            outline: none;
+            border-color: #00b8ff;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+
+        .contact-form button {
+            background: #00ffcc;
+            color: #0a0a0a;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s ease;
+        }
+
+        .contact-form button:hover {
+            background: #00b8ff;
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #00ffcc;
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #00ffcc;
+        }
+
+        .message.error {
+            color: #ff4d4d;
+        }
+
+        @keyframes holographic {
+            0% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc; }
+            50% { text-shadow: 0 0 10px #00ffcc, 0 0 20px #00ffcc, 0 0 40px #00b8ff; }
+            100% { text-shadow: 0 0 5px #00ffcc, 0 0 10px #00ffcc, 0 0 20px #00ffcc; }
+        }
+
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; }
+            .profile-card { transform: none; }
+            h1 { font-size: 2rem; }
+            .bio p { font-size: 1.1rem; }
+            .contact-section h2 { font-size: 2rem; }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+    <div class="container">
+        <section class="hero">
+            <div class="profile-card">
+                <img src="https://via.placeholder.com/200" alt="Prakash Yadav" class="profile-img">
+                <h1>Prakash Yadav</h1>
+            </div>
+            <div class="bio">
+                <p><strong>Age:</strong> 22</p>
+                <p><strong>Qualification:</strong> Diploma in Computer Engineering</p>
+                <p><strong>Profession:</strong> Laravel Backend Developer</p>
+                <p>I’m Prakash Yadav, a 22-year-old coding wizard sculpting the digital world with Laravel. I build fast, scalable backends that power the future—one line of code at a time.</p>
+                <div class="skills">
+                    <span class="skill">Laravel</span>
+                    <span class="skill">PHP</span>
+                    <span class="skill">MySQL</span>
+                    <span class="skill">REST APIs</span>
+                    <span class="skill">Git</span>
+                    <span class="skill">JavaScript</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-section">
+            <h2>Contact Me</h2>
+            <form class="contact-form" method="POST" action="email.php">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea rows="5" name="message" placeholder="Your Message" required></textarea>
+                <button type="submit" name="submit">Send Message</button>
+            </form>
+            <?php
+            // Optional: Display message if redirected back from email.php with a status
+            if (isset($_GET['status'])) {
+                if ($_GET['status'] === 'success') {
+                    echo "<p class='message'>Message sent successfully!</p>";
+                } elseif ($_GET['status'] === 'error') {
+                    echo "<p class='message error'>Failed to send message. Please try again later.</p>";
+                }
+            }
+            ?>
+        </section>
+    </div>
+
+    <script>
+        // Cyberpunk Background Animation
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const lines = [];
+        const maxLines = 50;
+
+        class Line {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.length = Math.random() * 100 + 50;
+                this.speed = Math.random() * 2 + 1;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+            update() {
+                this.y += this.speed;
+                if (this.y > canvas.height + this.length) {
+                    this.y = -this.length;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(this.x, this.y + this.length);
+                ctx.strokeStyle = `rgba(0, 255, 204, ${this.opacity})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        function initLines() {
+            for (let i = 0; i < maxLines; i++) {
+                lines.push(new Line());
+            }
+        }
+
+        function animateLines() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            lines.forEach(line => {
+                line.update();
+                line.draw();
+            });
+            requestAnimationFrame(animateLines);
+        }
+
+        initLines();
+        animateLines();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Profile Image Interaction
+        const profileImg = document.querySelector('.profile-img');
+        profileImg.addEventListener('click', () => {
+            profileImg.style.transform = 'scale(1.3) rotate(360deg)';
+            setTimeout(() => {
+                profileImg.style.transform = 'scale(1) rotate(0deg)';
+            }, 1200);
+        });
+
+        // Skills Animation
+        const skills = document.querySelectorAll('.skill');
+        skills.forEach((skill, index) => {
+            skill.style.animation = `slideIn 0.6s ease-out ${index * 0.1}s both`;
+        });
+
+        // Form Glow on Focus
+        const inputs = document.querySelectorAll('.contact-form input, .contact-form textarea');
+        inputs.forEach(input => {
+            input.addEventListener('focus', () => {
+                input.style.background = 'rgba(255, 255, 255, 0.15)';
+            });
+            input.addEventListener('blur', () => {
+                input.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+        });
+
+        // Mouse Glitch Effect
+        document.addEventListener('mousemove', (e) => {
+            const glitch = document.createElement('div');
+            glitch.style.position = 'absolute';
+            glitch.style.width = '5px';
+            glitch.style.height = '5px';
+            glitch.style.background = '#00ffcc';
+            glitch.style.left = `${e.pageX}px`;
+            glitch.style.top = `${e.pageY}px`;
+            glitch.style.opacity = '0.7';
+            glitch.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(glitch);
+            setTimeout(() => {
+                glitch.style.transition = 'all 0.3s ease';
+                glitch.style.opacity = '0';
+                glitch.style.transform = `translate(-50%, -50%) scale(${Math.random() * 2 + 1})`;
+                setTimeout(() => glitch.remove(), 300);
+            }, 50);
+        });
+
+        // Custom Animation Keyframes
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes slideIn {
+                from { opacity: 0; transform: translateX(-50px); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
+    </script>
+</body>
+</html>
